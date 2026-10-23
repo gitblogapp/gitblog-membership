@@ -1,0 +1,134 @@
+{
+  "ko": {
+    "badge": "멤버십 전용 글",
+    "heading": "이어서 읽으려면 멤버십을 확인해 주세요.",
+    "description": "가입한 회원은 이 블로그에서 전문을 읽을 수 있습니다.",
+    "login": "로그인하고 전문 읽기",
+    "join": "멤버십 가입하기",
+    "loading": "확인 중…",
+    "denied": "로그인 후 멤버십을 확인해 주세요.",
+    "failed": "글을 불러오지 못했습니다.",
+    "popupBlocked": "팝업을 허용한 뒤 다시 시도해 주세요."
+  },
+  "en": {
+    "badge": "Members-only article",
+    "heading": "Verify your membership to keep reading.",
+    "description": "Members can read the full article here on this blog.",
+    "login": "Sign in to read",
+    "join": "Join membership",
+    "loading": "Checking…",
+    "denied": "Sign in to verify your membership.",
+    "failed": "글을 불러오지 못했습니다.",
+    "popupBlocked": "Allow popups, then try again."
+  },
+  "ar": {
+    "badge": "مقال للأعضاء فقط",
+    "heading": "تحقق من عضويتك لمواصلة القراءة.",
+    "description": "يمكن للأعضاء قراءة المقال كاملًا هنا على المدونة.",
+    "login": "تسجيل الدخول للقراءة",
+    "join": "الانضمام إلى العضوية",
+    "loading": "جارٍ التحقق…",
+    "denied": "سجّل الدخول للتحقق من عضويتك.",
+    "failed": "글을 불러오지 못했습니다.",
+    "popupBlocked": "اسمح بالنوافذ المنبثقة ثم حاول مجددًا."
+  },
+  "de": {
+    "badge": "Artikel nur für Mitglieder",
+    "heading": "Prüfen Sie Ihre Mitgliedschaft, um weiterzulesen.",
+    "description": "Mitglieder können den vollständigen Artikel hier im Blog lesen.",
+    "login": "Zum Lesen anmelden",
+    "join": "Mitglied werden",
+    "loading": "Wird geprüft…",
+    "denied": "Melden Sie sich an, um Ihre Mitgliedschaft zu prüfen.",
+    "failed": "글을 불러오지 못했습니다.",
+    "popupBlocked": "Erlauben Sie Pop-ups und versuchen Sie es erneut."
+  },
+  "es": {
+    "badge": "Artículo exclusivo para miembros",
+    "heading": "Verifica tu membresía para seguir leyendo.",
+    "description": "Los miembros pueden leer el artículo completo aquí, en este blog.",
+    "login": "Iniciar sesión para leer",
+    "join": "Unirse a la membresía",
+    "loading": "Verificando…",
+    "denied": "Inicia sesión para verificar tu membresía.",
+    "failed": "글을 불러오지 못했습니다.",
+    "popupBlocked": "Permite las ventanas emergentes y vuelve a intentarlo."
+  },
+  "fr": {
+    "badge": "Article réservé aux membres",
+    "heading": "Vérifiez votre adhésion pour continuer à lire.",
+    "description": "Les membres peuvent lire l’article complet ici, sur ce blog.",
+    "login": "Se connecter pour lire",
+    "join": "Adhérer",
+    "loading": "Vérification…",
+    "denied": "Connectez-vous pour vérifier votre adhésion.",
+    "failed": "글을 불러오지 못했습니다.",
+    "popupBlocked": "Autorisez les fenêtres contextuelles, puis réessayez."
+  },
+  "it": {
+    "badge": "Articolo riservato agli iscritti",
+    "heading": "Verifica la tua iscrizione per continuare a leggere.",
+    "description": "Gli iscritti possono leggere l’articolo completo qui sul blog.",
+    "login": "Accedi per leggere",
+    "join": "Iscriviti",
+    "loading": "Verifica…",
+    "denied": "Accedi per verificare la tua iscrizione.",
+    "failed": "글을 불러오지 못했습니다.",
+    "popupBlocked": "Consenti i popup e riprova."
+  },
+  "ja": {
+    "badge": "会員限定記事",
+    "heading": "続きを読むにはメンバーシップを確認してください。",
+    "description": "会員はこのブログ内で全文を読めます。",
+    "login": "ログインして全文を読む",
+    "join": "メンバーシップに加入",
+    "loading": "確認中…",
+    "denied": "ログインしてメンバーシップを確認してください。",
+    "failed": "글을 불러오지 못했습니다.",
+    "popupBlocked": "ポップアップを許可してから再試行してください。"
+  },
+  "pt": {
+    "badge": "Artigo exclusivo para membros",
+    "heading": "Verifique a sua adesão para continuar a ler.",
+    "description": "Os membros podem ler o artigo completo aqui no blogue.",
+    "login": "Iniciar sessão para ler",
+    "join": "Aderir",
+    "loading": "A verificar…",
+    "denied": "Inicie sessão para verificar a sua adesão.",
+    "failed": "글을 불러오지 못했습니다.",
+    "popupBlocked": "Permita janelas pop-up e tente novamente."
+  },
+  "pt-br": {
+    "badge": "Artigo exclusivo para assinantes",
+    "heading": "Verifique sua assinatura para continuar lendo.",
+    "description": "Assinantes podem ler o artigo completo aqui no blog.",
+    "login": "Entrar para ler",
+    "join": "Assinar",
+    "loading": "Verificando…",
+    "denied": "Entre para verificar sua assinatura.",
+    "failed": "글을 불러오지 못했습니다.",
+    "popupBlocked": "Permita pop-ups e tente novamente."
+  },
+  "zh-hans": {
+    "badge": "会员专属文章",
+    "heading": "请验证会员资格以继续阅读。",
+    "description": "会员可在此博客内阅读全文。",
+    "login": "登录阅读全文",
+    "join": "加入会员",
+    "loading": "验证中…",
+    "denied": "请登录以验证会员资格。",
+    "failed": "글을 불러오지 못했습니다.",
+    "popupBlocked": "请允许弹出窗口后重试。"
+  },
+  "zh-hant": {
+    "badge": "會員專屬文章",
+    "heading": "請驗證會員資格以繼續閱讀。",
+    "description": "會員可在此部落格內閱讀全文。",
+    "login": "登入閱讀全文",
+    "join": "加入會員",
+    "loading": "驗證中…",
+    "denied": "請登入以驗證會員資格。",
+    "failed": "글을 불러오지 못했습니다.",
+    "popupBlocked": "請允許彈出式視窗後重試。"
+  }
+}
