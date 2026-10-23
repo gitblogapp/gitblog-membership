@@ -52,7 +52,25 @@ it('fetches private images with credentials in headers only and cleans up tokens
 it('shows the gate after denied reads and ignores arbitrary server error text', async () => {
   setup(); vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('INTERNAL SECRET',{status:403})));
   dispose = mountReader(config);
-  await vi.waitFor(() => expect(document.getElementById('status')?.textContent).toBe(config.messages.denied));
+  await vi.waitFor(() => expect((document.getElementById('login') as HTMLButtonElement).disabled).toBe(false));
+  expect(document.getElementById('status')?.textContent).toBe('');
   expect(document.getElementById('body')?.hidden).toBe(true);
   expect((document.getElementById('login') as HTMLButtonElement).disabled).toBe(false);
+});
+it('accepts appearance only from the registered parent without reloading private content', async () => {
+  setup();
+  const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({html:'<p>Member content</p>'})));
+  vi.stubGlobal('fetch', fetchMock);
+  dispose = mountReader(config);
+  await vi.waitFor(() => expect(document.getElementById('body')?.textContent).toBe('Member content'));
+  const data = {type:'gitblog-membership-theme',id:config.id,theme:'dark',appearance:{text:'#eeeeee',bodyFont:'Georgia, serif',fontSize:20,lineHeight:1.8}};
+  window.dispatchEvent(new MessageEvent('message',{origin:'https://other.test',source:window.parent,data}));
+  expect(document.documentElement.style.getPropertyValue('--host-text')).toBe('');
+  window.dispatchEvent(new MessageEvent('message',{origin:config.parentOrigin,source:window.parent,data}));
+  expect(document.documentElement.style.getPropertyValue('--host-text')).toBe('#eeeeee');
+  expect(document.documentElement.style.getPropertyValue('--host-font-size')).toBe('20px');
+  expect(document.documentElement.dataset.theme).toBe('dark');
+  expect(document.getElementById('body')?.textContent).toBe('Member content');
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  document.documentElement.removeAttribute('style');
 });

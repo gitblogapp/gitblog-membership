@@ -54,6 +54,7 @@ GitBlog `wrangler.jsonc`에 다음 바인딩이 필요합니다:
 - 공개 URL은 GitBlog가 소유하며 `origin`은 등록된 블로그 origin과 정확히 일치해야 합니다.
 - iframe → 부모: `{type:'gitblog-membership-resize',id,height}`. 반드시 GitBlog origin, iframe의 `contentWindow`, 글 ID를 모두 확인합니다.
 - 부모 → iframe: `{type:'gitblog-membership-theme',id,theme}`. 등록된 부모 origin과 `window.parent`를 확인합니다. 테마 변경 시 iframe을 새로 만들지 않습니다.
+- 위 메시지는 선택적 `appearance`도 받습니다: `text`, `bodyText`, `muted`, `border`, `surface`, `background`, `accent` 색상; `bodyFont`, `headingFont` 글꼴 계열; `fontSize`(12–40px), `lineHeight`(1.2–2.5). 템플릿이 현재 본문의 계산된 스타일을 전달하며 서비스는 허용된 값만 적용합니다. CSS 코드, URL, 스타일시트는 받지 않습니다. 웹폰트 파일은 프레임 사이에 공유되지 않으므로 별도 로드되지 않은 글꼴은 지정된 시스템 대체 글꼴로 표시합니다.
 - 팝업 → iframe: `{type:'gitblog-membership-grant',code,challenge}`. GitBlog origin, 열린 팝업, 일회용 challenge를 모두 확인합니다.
 - lang/theme 없는 기존 v1 템플릿도 계속 동작합니다. 다른 프레임워크도 같은 iframe 프로토콜을 사용하면 됩니다.
 

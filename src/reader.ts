@@ -1,4 +1,5 @@
 import { isGrant, isThemeMessage, type ReaderConfig, type Theme } from './protocol';
+import { applyAppearance } from './appearance';
 
 /** All authorization remains in GitBlog. The reader holds only an ephemeral, article-scoped token. */
 export function mountReader(config: ReaderConfig): () => void {
@@ -32,7 +33,7 @@ export function mountReader(config: ReaderConfig): () => void {
     reading = true;
     button.disabled = true;
     button.textContent = config.messages.loading;
-    status.textContent = config.messages.loading;
+    status.textContent = '';
     container.setAttribute('aria-busy', 'true');
     try {
       const response = await fetch(`/api/membership/read/${encodeURIComponent(config.id)}`, {
@@ -80,8 +81,8 @@ export function mountReader(config: ReaderConfig): () => void {
       body.hidden = true;
       credit.hidden = true;
       gate.hidden = false;
-      status.textContent = error instanceof Error && [config.messages.denied, config.messages.failed].includes(error.message)
-        ? error.message : config.messages.failed;
+      status.textContent = error instanceof Error && error.message === config.messages.denied
+        ? '' : config.messages.failed;
     } finally {
       if (!disposed) {
         reading = false;
@@ -101,7 +102,11 @@ export function mountReader(config: ReaderConfig): () => void {
     if (!popup) status.textContent = config.messages.popupBlocked;
   };
   const receive = (event: MessageEvent) => {
-    if (isThemeMessage(event, config, window.parent)) applyTheme(event.data.theme);
+    if (isThemeMessage(event, config, window.parent)) {
+      applyTheme(event.data.theme);
+      applyAppearance(event.data.appearance);
+      resize();
+    }
     if (!isGrant(event, location.origin, popup, challenge)) return;
     const acceptedChallenge = challenge;
     challenge = '';

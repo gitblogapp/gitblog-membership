@@ -13,7 +13,7 @@ it('serves a standalone, no-store reader and limits framing to the registered bl
   expect(response.headers.get('content-security-policy')).toContain('frame-ancestors https://blog.gitblog.page');
   expect(response.headers.get('content-security-policy')).not.toContain('unsafe-inline');
   expect(response.headers.get('cache-control')).toBe('private, no-store');
-  expect(response.headers.get('x-gitblog-membership-version')).toBe('1.0.0');
+  expect(response.headers.get('x-gitblog-membership-version')).toBe('1.1.0');
   expect(html).toContain('로그인하고 전문 읽기');
   expect(html).not.toContain('/_app/');
 });
