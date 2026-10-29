@@ -11,6 +11,11 @@ export function mountReader(config: ReaderConfig): () => void {
   const button = document.getElementById('login') as HTMLButtonElement;
   const media = window.matchMedia('(prefers-color-scheme: dark)');
   const abort = new AbortController();
+  // A restored document must start with a visible gate while reauthorizing.
+  gate.hidden = false;
+  body.hidden = true;
+  credit.hidden = true;
+  body.replaceChildren();
   let theme = config.theme;
   let token = '';
   let popup: Window | null = null;
@@ -35,9 +40,13 @@ export function mountReader(config: ReaderConfig): () => void {
     button.textContent = config.messages.loading;
     status.textContent = '';
     container.setAttribute('aria-busy', 'true');
+    const request = new AbortController();
+    const cancel = () => request.abort();
+    abort.signal.addEventListener('abort', cancel, { once: true });
+    const timeout = setTimeout(cancel, 15000);
     try {
       const response = await fetch(`/api/membership/read/${encodeURIComponent(config.id)}`, {
-        method: 'POST', credentials: 'same-origin', cache: 'no-store', signal: abort.signal,
+        method: 'POST', credentials: 'same-origin', cache: 'no-store', signal: request.signal,
         headers: { 'content-type': 'application/json', ...(token ? { authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify(code ? { code, challenge: grantChallenge } : {})
       });
@@ -53,7 +62,7 @@ export function mountReader(config: ReaderConfig): () => void {
         if (!/^[0-9a-f-]{36}$/i.test(assetId)) { img.remove(); continue; }
         try {
           const asset = await fetch(`/api/membership/assets/${encodeURIComponent(assetId)}?article=${encodeURIComponent(config.id)}`, {
-            credentials: 'same-origin', cache: 'no-store', signal: abort.signal,
+            credentials: 'same-origin', cache: 'no-store', signal: request.signal,
             headers: token ? { authorization: `Bearer ${token}` } : {}
           });
           if (!asset.ok) { img.remove(); continue; }
@@ -84,6 +93,8 @@ export function mountReader(config: ReaderConfig): () => void {
       status.textContent = error instanceof Error && error.message === config.messages.denied
         ? '' : config.messages.failed;
     } finally {
+      clearTimeout(timeout);
+      abort.signal.removeEventListener('abort', cancel);
       if (!disposed) {
         reading = false;
         button.disabled = false;
@@ -131,6 +142,9 @@ export function mountReader(config: ReaderConfig): () => void {
     popup?.close();
     releaseBlobs();
     body.replaceChildren();
+    body.hidden = true;
+    credit.hidden = true;
+    gate.hidden = false;
     observer.disconnect();
     media.removeEventListener('change', systemTheme);
     button.removeEventListener('click', login);

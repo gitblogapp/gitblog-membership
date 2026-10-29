@@ -1,12 +1,13 @@
 // @vitest-environment happy-dom
 import { afterEach, expect, it, vi } from 'vitest';
 import { mountReader } from '../src/reader';
+import { startReader } from '../src/browser';
 import { isGrant, isThemeMessage, type ReaderConfig } from '../src/protocol';
 import catalogs from '../src/messages.json';
 const config: ReaderConfig = { version: 1, id: '11111111-1111-4111-8111-111111111111', blogId: '22222222-2222-4222-8222-222222222222',
   title: 'Title', parentOrigin: 'https://blog.gitblog.page', locale: 'en', theme: 'light', messages: catalogs.en };
 let dispose: (() => void) | undefined;
-afterEach(() => { dispose?.(); dispose = undefined; vi.restoreAllMocks(); vi.unstubAllGlobals(); });
+afterEach(() => { dispose?.(); dispose = undefined; vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 function setup() {
   vi.spyOn(window.parent, 'postMessage').mockImplementation(() => {});
   document.body.innerHTML = '<main id="reader"><div id="gate"><p id="status"></p><button id="login"></button></div><article id="body" hidden></article><p id="credit" hidden></p></main>';
@@ -56,6 +57,33 @@ it('shows the gate after denied reads and ignores arbitrary server error text', 
   expect(document.getElementById('status')?.textContent).toBe('');
   expect(document.getElementById('body')?.hidden).toBe(true);
   expect((document.getElementById('login') as HTMLButtonElement).disabled).toBe(false);
+});
+it('recovers from a stalled read without leaving the login button disabled', async () => {
+  setup(); vi.useFakeTimers();
+  vi.stubGlobal('fetch', vi.fn((_url, {signal}) => new Promise((_resolve, reject) => {
+    signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+  })));
+  dispose = mountReader(config);
+  await vi.advanceTimersByTimeAsync(15000);
+  expect(document.getElementById('gate')?.hidden).toBe(false);
+  expect((document.getElementById('login') as HTMLButtonElement).disabled).toBe(false);
+  expect(document.getElementById('status')?.textContent).toBe(config.messages.failed);
+});
+it('clears private content on pagehide and reauthorizes on bfcache restoration', async () => {
+  setup();
+  const fetchMock = vi.fn().mockResolvedValueOnce(Response.json({html:'<p>Private body</p>',token:'OLD_TOKEN'}))
+    .mockResolvedValueOnce(new Response('', {status:401}));
+  vi.stubGlobal('fetch', fetchMock);
+  dispose = startReader(config);
+  await vi.waitFor(() => expect(document.getElementById('body')?.textContent).toBe('Private body'));
+  const transition = (type: string) => Object.defineProperty(new Event(type), 'persisted', {value:true});
+  window.dispatchEvent(transition('pagehide'));
+  expect(document.getElementById('body')?.textContent).toBe('');
+  window.dispatchEvent(transition('pageshow'));
+  await vi.waitFor(() => expect((document.getElementById('login') as HTMLButtonElement).disabled).toBe(false));
+  expect(fetchMock).toHaveBeenCalledTimes(2);
+  expect(fetchMock.mock.calls[1][1].headers).not.toHaveProperty('authorization');
+  expect(document.getElementById('gate')?.hidden).toBe(false);
 });
 it('accepts appearance only from the registered parent without reloading private content', async () => {
   setup();
